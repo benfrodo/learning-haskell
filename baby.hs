@@ -13,3 +13,48 @@ length' xs = sum[1 | _ <- xs]
 
 factorial :: Integer -> Integer 
 factorial x = product [1..x]
+
+-- learning pattern matching
+
+head' :: [a] -> a
+head' [] = error "You can't call head on an empty list"
+head' (x:_) = x
+
+factorial' :: (Integral a) => a -> a
+factorial' 0 = 1
+factorial' x = x * factorial' (x-1)
+
+sum' :: (Num a) => [a] -> a
+sum' [] = 0
+sum' (x:xs) = x + sum' xs
+
+-- 'as patterns'
+capital :: String -> String  
+capital "" = "Empty string, whoops!"  
+capital all@(x:xs) = "The first letter of " ++ all ++ " is " ++ [x]  
+
+-- guards and where bindings
+bmiTell :: (RealFloat a) => a -> a -> String  
+bmiTell weight height
+    | bmi <= 18.5 = "You're underweight, you emo, you!"  
+    | bmi <= 25.0 = "You're supposedly normal. Pffft, I bet you're ugly!"  
+    | bmi <= 30.0 = "You're fat! Lose some weight, fatty!"  
+    | otherwise   = "You're a whale, congratulations!"
+    where bmi = weight / height^2
+
+max' :: (Ord a) => a -> a -> a
+max' x y
+    | x > y = x
+    | otherwise = y
+
+
+calcBMI :: (RealFloat a) => [(a,a)] -> [a]
+calcBMI xs = [ bmi w h | (w,h) <- xs]
+    where bmi weight height = weight / height^2
+
+-- let bindings
+cylinder :: (RealFloat a) => a -> a -> a  
+cylinder r h = 
+    let sideArea = 2 * pi * r * h  
+        topArea = pi * r ^2  
+    in  sideArea + 2 * topArea  
