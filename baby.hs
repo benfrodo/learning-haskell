@@ -9,7 +9,7 @@ doubleSmallNumber x = if x > 100
 
 boomBang xs = [if x < 10 then "BOOM!" else "BANG!" | x <- xs, odd x]
 
-length' xs = sum[1 | _ <- xs]
+--length' xs = sum[1 | _ <- xs]
 
 factorial :: Integer -> Integer 
 factorial x = product [1..x]
@@ -58,3 +58,28 @@ cylinder r h =
     let sideArea = 2 * pi * r * h  
         topArea = pi * r ^2  
     in  sideArea + 2 * topArea  
+
+-- recursion
+zip' :: [a] -> [b] -> [(a,b)]
+zip' _ [] = []
+zip' [] _ = []
+zip' (x:xs) (y:ys) = (x,y) : zip' xs ys
+
+
+elem' :: (Eq a) => a -> [a] -> Bool  
+elem' a [] = False  
+elem' a (x:xs)  
+    | a == x    = True  
+    | otherwise = a `elem'` xs 
+
+quicksort :: (Ord a) => [a] -> [a]
+quicksort [] = []
+quicksort (x:xs) =
+    let smallerSorted = quicksort [a | a <- xs, a <= x]  
+        biggerSorted = quicksort [a | a <- xs, a > x]  
+    in  smallerSorted ++ [x] ++ biggerSorted  
+
+
+length' :: (Num a) => [a] -> a
+length' [] = 0
+length' (x:xs) = 1 + length' xs
