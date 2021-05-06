@@ -41,3 +41,47 @@ numLongChains :: Int
 numLongChains = length (filter isLong (map chain [1..100]))
     where isLong xs = length xs > 15
     
+
+-- lambdas, anonymous functions
+-- Collatz again but using a lambda instead of a where clause
+numberLongChains :: Int  
+numberLongChains = length (filter (\xs -> length xs > 15) (map chain [1..100]))  
+
+-- sum using folds and lambdas
+sum' :: (Num a) => [a] -> a
+sum' xs = foldl (\acc x -> acc + x) 0 xs
+
+-- or even simpler, although less clear
+sum'' :: (Num a) => [a] -> a
+sum'' = foldl (+) 0
+
+-- map with folds
+map' :: (a -> b) -> [a] -> [b]
+map' f xs = foldr (\x acc -> f x:acc) [] xs
+
+-- simpler using foldl1
+sum''' :: (Num a) => [a] -> a
+sum''' = foldl1 (+)
+
+-- how many terms for the sum of sqrt's of natural numbers to be >1000
+sqrtSums :: Int 
+sqrtSums = length (takeWhile (<1000) (scanl1 (+) (map sqrt [1..]))) + 1
+
+-- FUNCTION APPLICATION W $
+-- map ($ 3) [(4+), (10*), (^2), sqrt] 
+
+-- Function composition
+fn x = ceiling (negate (tan (cos (max 50 x))))
+
+fn' = ceiling . negate . tan . cos . max 50
+
+-- can rewrite the above problem of summing odd squares under 1000
+oddSquareSum' :: Integer 
+oddSquareSum' = sum . takeWhile (<10^4) . filter odd . map (^2) $ [1..]
+
+-- or a user-friendly way
+oddSquareSum'' :: Integer  
+oddSquareSum'' =   
+    let oddSquares = filter odd $ map (^2) [1..]  
+        belowLimit = takeWhile (<10000) oddSquares  
+    in  sum belowLimit  
