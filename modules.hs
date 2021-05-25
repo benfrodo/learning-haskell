@@ -1,5 +1,7 @@
 import qualified Data.List as M -- (nub, sort) would load only those two functions from the module
 import qualified Data.Char as C
+import qualified Data.Map as Map
+import qualified Data.Set as Set  
 
 -- no. of unique items in a list
 numUniques :: (Eq a) => [a] -> Int
@@ -31,3 +33,11 @@ lookUp key [] = Nothing
 lookup key ((k,v):xs) = if key == k
                         then Just v
                         else lookUp key xs
+
+
+-- or written with a fold instead of recursion
+lookUp' :: (Eq k) => k -> [(k,v)] -> Maybe v
+lookUp' key = foldr (\(k,v) acc -> if key == k then Just v else acc) Nothing 
+-- this function exists as lookup in Data.List
+
+-- Data.Set contains things like unions, intersections and differences as in proper mathematical sets
